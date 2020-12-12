@@ -1,4 +1,4 @@
-const inquirer = require('inquirer');
+var inquirer = require('inquirer');
 const fs = require('fs');
 const util = require('util');
 
@@ -52,10 +52,15 @@ const questions = [
 
 // function to write README file
 function writeToFile(fileName, data) {
+    console.log("writeToFile exists!");
 }
+
+// function call to write README file
+writeToFile();
 
 // function to initialize program
 function init() {
+    console.log("Init exists!");
 
 }
 
