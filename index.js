@@ -78,9 +78,9 @@ const init = async () => {
 
     const html = generateHTML(answers);
 
-    await writeFileAsync('index.html', html);
+    await writeFileAsync('README.html', html);
 
-    console.log('Successfully wrote to index.html');
+    console.log('Successfully wrote to README.html');
   } catch (err) {
     console.log(err);
   }
