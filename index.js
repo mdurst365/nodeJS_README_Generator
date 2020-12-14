@@ -1,89 +1,100 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
-const util = require('util');
+const generateMarkdown = require('./utils/generateMarkdown.js');
 
-const writeFileAsync = util.promisify(fs.writeFile);
+// array of questions for user
+const questions = [
 
-const promptUser = () => {
-  return inquirer.prompt([
-    //Github User Name
-    {
+  //Github User Name
+  {
       type: 'input',
+      message: 'What is your GitHub username?',
       name: 'username',
-      message: 'What is your Github username?',
-    },
-    //Email Address
-    {
-        type: 'input',
-        message: 'What is your email address?',
-        name: 'email',
-    },
-    //Project Title
-{
-  type: 'input',
-  message: 'What is the title of your project?',
-  name: 'projectTitle',
-}, 
-// Project Description
-{
-  type: 'input',
-  message: 'Please describe your project.',
-  name: 'description',
-}, 
-// Installation
-{
-  type: 'input',
-  message: 'Please describe any installation instructions',
-  name: 'installation',
-}, 
-// Contribution Guidelines
-{
-  type: 'input',
-  message: 'Please describe any contribution guidelines',
-  name: 'contribution',
-}, 
-// List of licenses to choose from
-{
-  type: 'input',
-  message: 'What license will you use for your project?',
-  name: 'license',
-},  
-]);
-};
+      validate: (answer) => {
+          if (answer !== ''){
+              return true
+          }   return "User name is required"
+         
+      },
+  },     
+  //Email Address
+  {
+      type: 'input',
+      message: 'What is your email address?',
+      name: 'email',
+      validate: (answer) => {
+        if (answer !== ''){
+            return true
+        }   return "Email is required"  
+    }, 
+       
+  },    
+  //Project Title
+  {
+      type: 'input',
+      message: 'What is the title of your project?',
+      name: 'title',
+      validate: (answer) => {
+        if (answer !== ''){
+            return true
+        }   return "Title is required"
+     },     
+  }, 
+  // Project Description
+  {
+      type: 'input',
+      message: 'Please describe your project.',
+      name: 'description',
+      validate: (answer) => {
+        if (answer !== ''){
+            return true
+        }   return "Description is required"
+    },   
+  }, 
+  // Installation
+  {
+      type: 'input',
+      message: 'Please describe installation instructions',
+      name: 'installation',
+      validate: (answer) => {
+        if (answer !== ''){
+            return true
+        }   return "Installation information is required"
+    }, 
+  }, 
+  // Contribution Guidelines
+  {
+      type: 'input',
+      message: 'Please describe any contribution guidelines',
+      name: 'contribution',
+      validate: (answer) => {
+        if (answer !== ''){
+            return true
+        }   return "Contribution information is required"
+    }, 
+  }, 
+  // List of licenses to choose from
+  {
+      type: 'list',
+      message: 'What license will you use for your project?',
+      name: 'license',
+      choices: [{name:'MIT', value:'MIT'},{name:'Apache 2.0', value: 'Apache%202.0'},{name:'GPL', value: 'GPL'}]
+    },   
+  
+  ];
 
-const generateHTML = (answers) =>
-`<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>README</title>
-</head>
-<body>
-    <p>My GitHub username is ${answers.username}</p>
-    <p>My email is ${answers.email}.</p>
-    <p>The name of my project is ${answers.projectTitle}.</p>
-    Project Description: ${answers.description}.</p>
-    <p>Installation instructions: ${answers.installation}.</p>
-    <p>Contribution Guidelines: ${answers.contribution}.</p>
-    <p>Project license: ${answers.license}.
-</body>
-</html>`;
+// function to write README file
+function writeToFile(data) {
+  fs.writeFile("README.md", generateMarkdown(data), (err) =>
+  err ? console.log(err)
+      : console.log("creating a readme.md file")
+  );
+}
 
-// Bonus using async/await and try/catch
-const init = async () => {
-  console.log('Hello! Please answer a few questions for your README file');
-  try {
-    const answers = await promptUser();
-
-    const html = generateHTML(answers);
-
-    await writeFileAsync('README.html', html);
-
-    console.log('Successfully wrote to README.html');
-  } catch (err) {
-    console.log(err);
-  }
-};
+// function to initialize program
+function init() {
+  inquirer.prompt(questions)
+  .then(writeToFile)
+}
 
 init();
