@@ -8,7 +8,7 @@ If cloning this application be sure to run npm install from the command line in 
 
 # Preview will go here
 
-![walk through](https://raw.githubusercontent.com/mdurst365/readme_gen_animation.gif)
+![walk through](https://raw.githubusercontent.com/mdurst365/nodeJS_README_Generator/main/readme_gen_animation.gif)
 
 # License
 
